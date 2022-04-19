@@ -2,7 +2,9 @@
 # VMWare не может вставить русские буквы, так что исключайте их при копировании
 # !!!!!
 
-# Пакеты -> ip -> тунель -> дхцп -> -> -> 
+# План работы
+# hostnames -> hosts -> apt/yum -> ip -> gre -> frr -> dhcp -> dhcp-relay ->
+# -> primary DNS -> DDNS -> secondary DNS  
 
 # File version: 2.0
 CONFIG_FILE_VERSION="2.0"
@@ -31,7 +33,7 @@ systemctl restart ssh.service
 
 # Эта настройка для FW и RTR 
 
-echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf; shutdown -r 0
 
 # Настройка debian 
 
@@ -80,6 +82,7 @@ yum install lynx vim net-tools dhclient bash-completion tcpdump curl nfs-utils c
 # firewall вырубить на всех, кроме R-FW
 
 systemctl stop firewalld && systemctl disable firewalld
+# systemctl start firewalld && systemctl enable firewalld
 
 # R-FW
 
@@ -91,7 +94,6 @@ firewall-cmd --permanent --zone=trusted --add-interface=gre1
 
 firewall-cmd --reload
 
-# firewall-cmd --permanent --zone=external --add-interface=ens256
 # firewall-cmd --permanent --zone=external --add-masquerade
 # firewall-cmd --permanent --zone=trusted --add-interface=tunnel
 # firewall-cmd --permanent --zone=external --add-forward-port=port=80:proto=tcp:toport=80:toaddr=192.168.20.10
@@ -120,7 +122,7 @@ nano /etc/frr/daemons
 systemctl restart frr
 vtysh
 
-# # frr config
+# # # frr config
 # conf t  
 # 	router ospf    
 # 		network 172.16.20.0/24 area 0    
@@ -128,12 +130,14 @@ vtysh
 # 		network 172.16.55.0/30 area 0    
 # 		network 10.5.5.0/30 area 0    
 # 		network 5.5.5.0/27 area 0    
-# 		passive-interface ens160    
+# 		passive-interface ens160
 # 		passive-interface ens256
 # 		exit
 # 	exit
 # write
 # exit
+
+apt install iptables-persistent -y 
 
 # L-RTR-A
 
@@ -217,3 +221,104 @@ vtysh
 # exit
 
 apt install isc-dhcp-relay
+
+# R-FW
+
+yum install /media/cdrom/lib* /media/cdrom/frr*; 
+
+systemctl stop frr; systemctl disable frr;
+sed -ie 's/ospfd=no/ospfd=yes/' /etc/frr/daemons; 
+sed -ie 's/zebra=no/zebra=yes/' /etc/frr/daemons; 
+systemctl start frr; systemctl enable frr;
+
+vtysh
+
+# frr config
+conf t
+	ip forwarding
+	router ospf
+		network 192.168.20.0/24 area 0    
+		network 192.168.10.0/30 area 0    
+		network 10.5.5.0/30 area 0    
+		network 5.5.5.0/27 area 0
+		passive-interface ens160
+		passive-interface ens224
+		exit
+	exit
+write
+exit
+
+# R-RTR
+
+yum install /media/cdrom/lib* /media/cdrom/frr*; 
+
+systemctl stop frr; systemctl disable frr;
+sed -ie 's/ospfd=no/ospfd=yes/' /etc/frr/daemons; 
+sed -ie 's/zebra=no/zebra=yes/' /etc/frr/daemons; 
+systemctl start frr; systemctl enable frr;
+
+vtysh
+
+# frr config
+conf t
+	ip forwarding
+	router ospf
+		network 192.168.10.0/30 area 0
+		network 192.168.100.0/24 area 0
+		passive-interface ens192
+		exit
+	exit
+write
+exit
+
+# R-SRV
+
+apt install bind9
+nano /etc/bind/named.conf.options
+
+# // /etc/bind/named.conf.options file
+# options {
+# 	directory "/var/cache/bind";   
+# 	forwarders { 10.10.10.10; };   
+# 	dnssec-validation no;   
+# 	listen-on-v6 { none; };
+# };
+
+mkdir /opt/dns
+cp /etc/bind/db.local /opt/dns/skill39.db
+cp /etc/bind/db.127 /opt/dns/db.172
+cp /etc/bind/db.127 /opt/dns/db.192
+chown -R bind:bind /opt/dns
+
+nano /etc/apparmor.d/usr.sbin.named
+
+# /opt/dns/** rw,
+
+systemctl restart apparmor.service
+
+nano /etc/bind/named.conf.default-zones
+
+# zone "skill39.wsr" { 
+# 	type master; 
+# 	allow-transfer { any; }; 
+# 	file "/opt/dns/skill39.db";
+# };
+# zone "16.172.in-addr.arpa" { 
+# 	type master; 
+# 	allow-transfer { any; }; 
+# 	file "/opt/dns/db.172";
+# };
+# zone "168.192.in-addr.arpa" { 
+# 	type master; 
+# 	allow-transfer { any; }; 
+# 	file "/opt/dns/db.192";
+# };
+
+nano /opt/dns/skill39.db
+# ( Файл находится в этой директории )
+
+nano /opt/dns/db.172
+# ( Файл находится в этой директории )
+
+nano /opt/dns/db.192
+# ( Файл находится в этой директории )

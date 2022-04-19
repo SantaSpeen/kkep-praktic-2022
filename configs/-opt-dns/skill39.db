@@ -1,0 +1,30 @@
+; /opt/dns/skill39.db file
+; Configured by Maxim
+$TTL 604800
+@	IN	SOA	l-srv.skill39.wsr.	root.skill39.wsr. (
+				1,			; Serial
+				604800,		; Refresh
+				86400,		; Retry
+				2419200,	; Expire
+				604800 )	; Negative Cache TTL
+
+@	IN	NS	l-srv.skill39.wsr.
+
+; LEFT
+l-fw	IN	A	10.10.10.1
+		IN	A	172.16.20.1
+		IN	A	172.16.50.1
+		IN	A	172.16.55.1
+l-srv	IN	A	172.16.20.10
+l-rtr-a	IN	A	172.16.50.2
+l-rtr-b	IN	A	172.16.55.2
+server	IN	CNAME	l-srv
+
+; RIGHT
+r-fw	IN	A	20.20.20.100
+		IN	A	192.168.10.1
+		IN	A	192.168.20.1
+r-srv	IN	A	192.168.20.10
+r-rtr	IN	A	192.168.10.2
+r-cli	IN	A	192.168.100.100
+www	IN	CNAME	r-fw
