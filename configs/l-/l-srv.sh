@@ -12,7 +12,15 @@ apt-cdrom add
 
 apt-get install tcpdump bind9 ssh nfs-common network-manager curl lynx net-tools vim bind9utils cifs-utils -y
 
+sed -ie "s/^hosts:\t*/hosts:\t\tdns files [NOTFOUND=return] # old:/" /etc/nsswitch.conf
+SSHC="/etc/ssh/sshd_config"
+cp $SSHC $SSHC.old
+sed -ie 's/#PermitRoot.*/PermitRootLogin yes/' $SSHC
 
+nmcli con del id ens192
+nmcli con add con-name ens192 ifname ens192 autoconnect yes type ethernet ip4 172.16.20.10/24 gw4 172.16.20.1
+nmcli con mod ens192 +ipv4.dns 172.16.20.10 +ipv4.dns 192.168.20.10 +ipv4.dns-search "skill39.wsr"
+nmcli con up ens192 ifname ens192
 
 systemctl disable chronyd ; systemctl stop chronyd
 shutdown -r 0

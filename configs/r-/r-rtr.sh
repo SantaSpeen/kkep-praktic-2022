@@ -31,9 +31,9 @@ sed -ie 's/#PermitRoot.*/PermitRootLogin yes/' $SSHC
 nmcli con del id ens192
 nmcli con del id ens160
 
-nmcli con add con-name ens160 ifname ens160 autoconnect yes type ethernet ip4 192.168.10.2/30 
+nmcli con add con-name ens160 ifname ens160 autoconnect yes type ethernet ip4 192.168.10.2/30 gw4 192.168.10.1
 nmcli con mod ens160 +ipv4.dns 172.16.20.10 +ipv4.dns 192.168.20.10 +ipv4.dns-search "skill39.wsr"
-nmcli con add con-name ens192 ifname ens192 autoconnect yes type ethernet ip4 192.168.100.1/24 gw4 192.168.10.1
+nmcli con add con-name ens192 ifname ens192 autoconnect yes type ethernet ip4 192.168.100.1/24
 nmcli con mod ens192 +ipv4.dns 172.16.20.10 +ipv4.dns 192.168.20.10 +ipv4.dns-search "skill39.wsr"
 
 nmcli con up ens160 ifname ens160
