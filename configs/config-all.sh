@@ -68,11 +68,11 @@ cat $REPO_FILE
 # Проверить устройства можно командой blkid
 # Имя образа будет указано в lable="<ISO-NAME>"
 
-# /dev/sr1 Это [datastore1] _ISO/CentOS-7-x86_64-DVD-1810.iso
 # /dev/sr0 Это [datastore1] _ISO/Additional.iso
+# /dev/sr1 Это [datastore1] _ISO/CentOS-7-x86_64-DVD-1810.iso
 
-mount /dev/sr1 /media/CentOS
-mount /dev/sr0 /media/cdrom
+mount -L "CDROM" /media/cdrom
+mount -L "CentOS 7 x86_64" /media/CentOS
 
 yum install lynx vim net-tools dhclient bash-completion tcpdump curl nfs-utils cifs-utils sshpass bind-utils libcares* -y
 

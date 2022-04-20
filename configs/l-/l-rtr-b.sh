@@ -1,4 +1,4 @@
-HS="/etc/hostsname"
+HS="/etc/hostname"
 rm $HS; touch $HS
 echo "L-RTR-B" >> $HS
 H="/etc/hosts"; rm $H; touch $H
@@ -10,7 +10,7 @@ echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 iptables -F 
 apt-cdrom add
 
-apt install frr tcpdump bind9 ssh nfs-common network-manager curl lynx net-tools vim bind9utils cifs-utils zsh git -y
+apt install frr tcpdump ssh nfs-common network-manager curl lynx net-tools vim bind9utils cifs-utils -y
 
 sed -ie "s/^hosts:\t*/hosts:\t\tdns files [NOTFOUND=return] # old:/" /etc/nsswitch.conf
 SSHC="/etc/ssh/sshd_config"
@@ -29,10 +29,9 @@ systemctl stop frr; systemctl disable frr;
 sed -ie 's/ospfd=no/ospfd=yes/' /etc/frr/daemons; 
 sed -ie 's/zebra=no/zebra=yes/' /etc/frr/daemons; 
 systemctl start frr; systemctl enable frr;
-vtysh
 
-conf t 
-	ip forw
+vtysh
+conf t
 	router ospf    
 		network 172.16.55.0/30 area 0    
 		network 172.16.200.0/24 area 0
@@ -47,5 +46,6 @@ apt install isc-dhcp-relay -y
 # 172.16.50.2
 # ens192 ens224
 
+systemctl disable chronyd ; systemctl stop chronyd
 shutdown -r 0
 

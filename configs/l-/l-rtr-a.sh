@@ -1,4 +1,4 @@
-HS="/etc/hostsname"
+HS="/etc/hostname"
 rm $HS; touch $HS
 echo "L-RTR-A" >> $HS
 H="/etc/hosts"; rm $H; touch $H
@@ -10,14 +10,13 @@ echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 iptables -F 
 apt-cdrom add
 
-apt install frr tcpdump bind9 ssh nfs-common network-manager curl lynx net-tools vim bind9utils cifs-utils zsh git -y
+apt install frr tcpdump ssh nfs-common network-manager curl lynx net-tools vim bind9utils cifs-utils -y
 
 sed -ie "s/^hosts:\t*/hosts:\t\tdns files [NOTFOUND=return] # old:/" /etc/nsswitch.conf
 SSHC="/etc/ssh/sshd_config"
 cp $SSHC $SSHC.old
 sed -ie 's/#PermitRoot.*/PermitRootLogin yes/' $SSHC
 
-systemctl start NetworkManager
 nmcli con add con-name ens192 ifname ens192 autoconnect yes type ethernet ip4 172.16.50.2/30 gw4 172.16.50.1
 nmcli con mod ens192 +ipv4.dns 172.16.20.10 +ipv4.dns 192.168.20.10 +ipv4.dns-search "skill39.wsr"
 nmcli con up ens192 ifname ens192
@@ -29,11 +28,10 @@ systemctl stop frr; systemctl disable frr;
 sed -ie 's/ospfd=no/ospfd=yes/' /etc/frr/daemons; 
 sed -ie 's/zebra=no/zebra=yes/' /etc/frr/daemons; 
 systemctl start frr; systemctl enable frr;
-vtysh
 
-conf t 
-	ip forw
-	router ospf    
+vtysh
+conf t
+	router ospf
 		network 172.16.50.0/30 area 0
 		network 172.16.100.0/24 area 0
 		passive-interface esn224
@@ -50,5 +48,6 @@ rm $DHC; touch $DHC
 echo -e "# /etc/dhcp/dhcpd.conf file\n# L-RTR-A\ndefault-lease-time 600;\nmax-lease-time 7200;\n\nddns-update-style interim;\nupdate-static-leases on;\nzone skill39.wsr. { primary 172.16.20.10; }\nzone 16.172.in-addr.arpa. { primary 172.16.20.10; }\nauthoritative;\n\noption domain-name \"skill39.wsr\";\noption domain-name-servers 172.16.20.10, 192.168.20.10;\n\nsubnet 172.16.50.0 netmask 255.255.255.252 {}\nsubnet 172.16.100.0 netmask 255.255.255.0 {\n\trange 172.16.100.65 172.16.100.75;\n\toption routers 172.16.100.1;\n}\nsubnet 172.16.200.0 netmask 255.255.255.0 {\n\trange 172.16.200.65 172.16.200.75;\n\toption routers 172.16.200.1;\n}\nhost lclib {\n\thardware ethernet 00:0C:29:1D:2C:06;\n\tfixed-address 172.16.200.61;\n}\n" >> $DHC
 systemctl start isc-dhcp-server && systemctl enable isc-dhcp-server
 
+systemctl disable chronyd ; systemctl stop chronyd
 shutdown -r 0
 
