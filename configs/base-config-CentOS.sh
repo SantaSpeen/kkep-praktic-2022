@@ -21,13 +21,6 @@ echo -e "20.20.20.10\tisp" >> $HOSTS
 
 cat $HOSTS
 
-# SSH config
-
-SSH_CONFIG="/etc/ssh/sshd_config"
-cp $SSH_CONFIG $SSH_CONFIG.old
-sed -ie 's/#PermitRoot.*/PermitRootLogin yes/' $SSH_CONFIG
-systemctl restart sshd.service
-
 # YUM config
 
 cd /media/
@@ -45,10 +38,18 @@ echo -e "[c7-media]\nname=CentOS-$releasever - Media\nbaseurl=file:///media/Cent
 
 cat $REPO_FILE
 
-# /dev/sr1 CentOS-7-x86_64-DVD-1810.iso
-# /dev/sr0 Additional.iso
+# /dev/sr0 CentOS-7-x86_64-DVD-1810.iso
+# /dev/sr1 Additional.iso
 
-mount /dev/sr1 /media/CentOS
-mount /dev/sr0 /media/cdrom
+mount /dev/sr0 /media/CentOS
+mount /dev/sr1 /media/cdrom
 
 yum install lynx vim net-tools dhclient bash-completion tcpdump curl nfs-utils cifs-utils sshpass bind-utils -y
+yum install zsh git -y
+
+# SSH config
+
+SSH_CONFIG="/etc/ssh/sshd_config"
+cp $SSH_CONFIG $SSH_CONFIG.old
+sed -ie 's/#PermitRoot.*/PermitRootLogin yes/' $SSH_CONFIG
+systemctl restart sshd.service

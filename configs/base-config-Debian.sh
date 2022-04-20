@@ -21,6 +21,13 @@ echo -e "10.10.10.10\tisp" >> $HOSTS
 
 cat $HOSTS
 
+
+# APT config
+
+apt-cdrom add
+apt install tcpdump bind9 ssh nfs-common network-manager curl lynx net-tools vim bind9utils cifs-utils -y
+apt install zsh git -y
+
 # SSH config
 
 SSH_CONFIG="/etc/ssh/sshd_config"
@@ -28,7 +35,3 @@ cp $SSH_CONFIG $SSH_CONFIG.old
 sed -ie 's/#PermitRoot.*/PermitRootLogin yes/' $SSH_CONFIG
 systemctl restart ssh.service
 
-# APT config
-
-apt-cdrom add
-apt-get install tcpdump bind9 ssh nfs-common network-manager curl lynx net-tools vim bind9utils cifs-utils -y
