@@ -88,12 +88,14 @@ firewall-cmd --permanent --zone=external --add-interface=ens160
 firewall-cmd --permanent --zone=trusted --add-interface=ens192
 firewall-cmd --permanent --zone=trusted --add-interface=ens224
 firewall-cmd --permanent --zone=trusted --add-interface=gre1
+firewall-cmd --permanent --zone=external --add-port=22/tcp
+firewall-cmd --permanent --zone=external --add-port=22/udp
+firewall-cmd --permanent --zone=external --add-forward-port=port=53:proto=tcp:toport=53:toaddr=192.168.20.10
 
 firewall-cmd --reload
 
 # firewall-cmd --permanent --zone=external --add-masquerade
 # firewall-cmd --permanent --zone=trusted --add-interface=tunnel
-# firewall-cmd --permanent --zone=external --add-forward-port=port=80:proto=tcp:toport=80:toaddr=192.168.20.10
 # firewall-cmd --permanent --zone=external --add-service=http
 # firewall-cmd --permanent --zone=external --add-service=https
 # firewall-cmd --permanent --zone=external --add-service=ssh
@@ -152,9 +154,9 @@ iptables -P INPUT ACCEPT
 iptables -P OUTPUT ACCEPT
 iptables -P FORWARD ACCEPT
 
-# iptables -t nat -A PREROUTING -i ens256 -p udp --dport 53 -j DNAT --to-destination 172.16.20.10
 iptables -t nat -A POSTROUTING -o ens256 -j MASQUERADE
-iptables -t nat -A PREROUTING -i ens256 -j DNAT --to-destination 172.16.20.10
+iptables -t nat -A PREROUTING -i ens160 -p udp --dport 53 -j DNAT --to-destination 172.16.20.10
+# iptables -t nat -A PREROUTING -i ens256 -j DNAT --to-destination 172.16.20.10
 
 
 echo "AllowUsers ssh_p root ssh_c" >> /etc/ssh/sshd_config
@@ -304,14 +306,17 @@ exit
 apt install bind9
 nano /etc/bind/named.conf.options
 
-# // /etc/bind/named.conf.options file
-# options {
-# 	directory "/var/cache/bind";   
-# 	forwarders { 10.10.10.10; };   
-# 	dnssec-validation no;
-# 	listen-on-v6 { none; };
-# 	recursion yes;
-# };
+// /etc/bind/named.conf.options file
+options {
+	directory "/var/cache/bind";   
+	forwarders { 10.10.10.10; }; 
+	dnssec-validation no;
+	listen-on port 53 { any; };
+	listen-on-v6 { none; };
+	allow-transfer { any; };
+	allow-recursion { any; };
+	recursion yes;
+};
 
 mkdir /opt/dns
 cp /etc/bind/db.local /opt/dns/skill39.db
@@ -327,24 +332,23 @@ systemctl restart apparmor.service
 
 nano /etc/bind/named.conf.default-zones
 
-# zone "skill39.wsr" {
-# 	type master;
-# 	allow-transfer { any; };
-# 	allow-update { 172.16.50.2; };
-# 	recursion yes;
-# 	file "/opt/dns/skill39.db";
-# };
-# zone "16.172.in-addr.arpa" { 
-# 	type master; 
-# 	allow-transfer { any; };
-# 	allow-update { 172.16.50.2; };
-# 	file "/opt/dns/db.172";
-# };
-# zone "168.192.in-addr.arpa" { 
-# 	type master; 
-# 	allow-transfer { any; }; 
-# 	file "/opt/dns/db.192";
-# };
+zone "skill39.wsr" {
+	type master;
+	allow-transfer { any; };
+	allow-update { 172.16.50.2; };
+	file "/opt/dns/skill39.db";
+};
+zone "16.172.in-addr.arpa" { 
+	type master; 
+	allow-transfer { any; };
+	allow-update { 172.16.50.2; };
+	file "/opt/dns/db.172";
+};
+zone "168.192.in-addr.arpa" { 
+	type master; 
+	allow-transfer { any; }; 
+	file "/opt/dns/db.192";
+};
 
 nano /opt/dns/skill39.db
 # ( Файл находится в этой директории )
@@ -368,3 +372,32 @@ yum install bind
 
 mkdir /opt/dns
 chown named:named /opt/dns
+
+
+# R-SRV
+
+yum install bind 
+
+nano /etc/bind/named.conf.default-zones
+
+mkdir /opt/dns; chown -R named:named /opt/dns
+touch /opt/dns/skill39.db; chown -R named:named /opt/dns/skill39.db
+touch /opt/dns/db.172; chown -R named:named /opt/dns/db.172
+touch /opt/dns/db.192; chown -R named:named /opt/dns/db.192
+
+zone "skill39.wsr" {
+	type slave;
+	masters { 172.16.20.10; };
+	file "/opt/dns/skill39.db";
+};
+zone "16.172.in-addr.arpa" { 
+	type slave; 
+	masters { 172.16.20.10; };
+	file "/opt/dns/db.172";
+};
+zone "168.192.in-addr.arpa" { 
+	type slave; 
+	masters { 172.16.20.10; };
+	file "/opt/dns/db.192";
+};
+

@@ -27,7 +27,6 @@ sed -ie "s/^hosts:\t*/hosts:\t\tdns files [NOTFOUND=return] # old:/" /etc/nsswit
 SSHC="/etc/ssh/sshd_config"
 cp $SSHC $SSHC.old
 sed -ie 's/#PermitRoot.*/PermitRootLogin yes/' $SSHC
-
 nmcli con del id ens32
 nmcli con add con-name ens32 ifname ens32 autoconnect yes type ethernet ip4 192.168.100.100/24 gw4 192.168.100.1
 nmcli con mod ens32 +ipv4.dns 172.16.20.10 +ipv4.dns 192.168.20.10 +ipv4.dns-search "skill39.wsr"

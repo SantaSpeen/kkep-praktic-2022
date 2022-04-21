@@ -8,6 +8,7 @@ echo -e "# Work values\n172.16.20.10\tl-srv l-srv.skill39.wsr\n10.10.10.1\tl-fw 
 echo -e "10.10.10.10\tisp" >> $H
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 iptables -F
+iptables -t nat -F
 apt-cdrom add
 
 apt install frr iptables-persistent tcpdump ssh nfs-common network-manager curl lynx net-tools vim bind9utils cifs-utils -y

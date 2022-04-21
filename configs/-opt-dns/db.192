@@ -2,10 +2,10 @@
 ; Configured by Maxim
 $TTL 604800
 @	IN	SOA	skill39.wsr.	root.skill39.wsr. (
-				1,			; Serial
-				604800,		; Refresh
-				86400,		; Retry
-				2419200,	; Expire
+				1			; Serial
+				604800		; Refresh
+				86400		; Retry
+				2419200	; Expire
 				604800 )	; Negative Cache TTL
 
 @	IN	NS	l-srv.skill39.wsr.
