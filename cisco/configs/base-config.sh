@@ -1,8 +1,8 @@
 en
 	conf t
 		hostname <name>
-		en secret cisco
 		ip domain name <name>
+		en secret cisco
 
 		line con 0
 			no sh
@@ -24,11 +24,10 @@ en
 		banner motd <motd>
 
 		crypto key generate rsa
-
 		1024
 
 		ip ssh ver 2
-		username admin secret line
+		username admin secret admin
 
 		exit
 	exit
