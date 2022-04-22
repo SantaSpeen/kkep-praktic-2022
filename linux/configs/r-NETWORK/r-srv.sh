@@ -33,6 +33,9 @@ nmcli con add con-name ens160 ifname ens160 autoconnect yes type ethernet ip4 19
 nmcli con mod ens160 +ipv4.dns 172.16.20.10 +ipv4.dns 192.168.20.10 +ipv4.dns-search "skill39.wsr"
 nmcli con up ens160 ifname ens160
 
+# Secondary DNS 
+# Do it by you self
+
 systemctl disable chronyd ; systemctl stop chronyd
 shutdown -r 0
 
