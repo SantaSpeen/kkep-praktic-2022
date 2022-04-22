@@ -1,6 +1,17 @@
+Use: 
+
+	gay-zone:
+		all => VLAN 22, 220-221
+		b1-b2 => EthChannel
+
 VLANS:
 
 Native 		VLAN	= 22
 Managment 	VLAN	= 44
 Derective 	VLAN	= 220 to 229
 
+NETMASKS:
+
+/16	255.255.0.0
+/24	255.255.255.0
+/30	255.255.255.252
