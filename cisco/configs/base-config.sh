@@ -1,36 +1,59 @@
 en
+	er s
+	del vlan.dat
 	conf t
-		hostname <name>
-		ip domain name <name>
-		en secret cisco
 
-		line con 0
-			no sh
-			exec-timeout 0 0
-			password pass
+		vl 22 
+			na "Native VLAN"
+		vl 44
+			na "Managment VLAN"
+
+		vl 220
+			na "VLAN1 Gay"
+		vl 221
+			na "VLAN2 Gay"
+		vl 222
+			na "VLAN3 Sexshop"
+		vl 223
+			na "VLAN4 Bezruk steet"
+		vl 224
+			na "VLAN5 Bezruk steet"
+		vl 225
+			na "VLAN6 Kazahstan"
+		vl 226
+			na "VLAN7 Kazahstan"
+		vl 227
+			na "VLAN8 Kazahstan"
+		vl 228
+			na "VLAN9 Sysadmin central"
+		vl 229
+			na "VLAN10 Sysadmin central"
+
+		lin c 0
+			exe 0 0
+			pass pass
 			login
-			transport input ssh 
-			exit
 
-		line vty 0 15
-			no sh
-			exec-timeout 0 0
-			password cisco
+		lin v 0 15
+			exe 0 0
+			pass cisco
 			login local
-			transport input ssh
+			t i s
 			exit
 
-		service password-encryption
-		banner motd <motd>
+		h <name>
+		ip domain n <name>
+		ena s cisco
 
-		crypto key generate rsa
+		ser p 
+		ba m <MOTD>
+
+		cr k g r
 		1024
 
-		ip ssh ver 2
-		username admin secret admin
+		ip s v 2
+		u admin s admin
 
-		exit
-	exit
+		do wr
+		do rel
 
-write
-exit
