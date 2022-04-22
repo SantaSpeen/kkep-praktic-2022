@@ -27,7 +27,7 @@ SSHC="/etc/ssh/sshd_config"
 cp $SSHC $SSHC.old
 sed -ie 's/#PermitRoot.*/PermitRootLogin yes/' $SSHC
 nmcli con del id ens32
-nmcli con add con-name ens32 ifname ens32 autoconnect yes type ethernet ip4 "20.20.20.5/24" gw4 20.20.20.5
+nmcli con add con-name ens32 ifname ens32 autoconnect yes type ethernet ip4 "20.20.20.5/24" gw4 20.20.20.10
 nmcli con mod ens32 +ipv4.dns 10.10.10.1 +ipv4.dns 20.20.20.100 +ipv4.dns-search "skill39.wsr"
 nmcli con up ens32 ifname ens32
 
