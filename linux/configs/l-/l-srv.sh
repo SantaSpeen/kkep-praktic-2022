@@ -12,6 +12,9 @@ apt-cdrom add
 
 apt-get install tcpdump bind9 ssh nfs-common network-manager curl lynx net-tools vim bind9utils cifs-utils dnsutils -y
 
+apt install git zsh curl -y
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 sed -ie "s/^hosts:\t*/hosts:\t\tdns files [NOTFOUND=return] # old:/" /etc/nsswitch.conf
 SSHC="/etc/ssh/sshd_config"
 cp $SSHC $SSHC.old

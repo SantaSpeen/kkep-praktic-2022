@@ -78,7 +78,7 @@ yum install lynx vim net-tools dhclient bash-completion tcpdump curl nfs-utils c
 
 # firewall вырубить на всех, кроме R-FW
 
-systemctl stop firewalld && systemctl disable firewalld
+systemctl stop firewalld &&  systemctl disable firewalld
 # systemctl start firewalld && systemctl enable firewalld
 
 # R-FW

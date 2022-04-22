@@ -1,0 +1,3 @@
+Native 		VLAN	= 22
+Managment 	VLAN	= 44
+Derective 	VLAN	= 220 to 229
