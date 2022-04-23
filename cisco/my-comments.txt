@@ -1,23 +1,92 @@
 Use: 
+	
+	RIPv2, no autosum, pas-int
+
+	*-isp:
+
+		1. cht-rtr1 		cht-isp:		172.18.79.0/30
+		2. cht-rtr2 		cht-isp: 		172.18.79.4/30
+		3. cht-isp			bezruk-isp: 	172.18.79.8/30
+		4. bezruk-isp		kazahstan-isp:	172.18.79.12/30 
+		5. rostelecom-isp	bezruk-isp: 	172.18.79.16/30
+		6. kazahstan-isp 	ssa-v-isp:		172.18.79.20/30
+		7. floor-sw-ssa-v	ssa-v-isp:		172.18.79.24/30
+		8. ssa-v-isp		cht-isp: 		172.18.79.28/30
 
 	china-town:
-		all => VLAN 22, 44, 220-221
-		main->( b1<->b2 ) => EthChannel (on)
+
+		vl: VLAN 22, 220-221
+		EthChannel mode on => b1<->b2
+
+	imsit:
+
+		vl: VLAN 22, 44, 222, native vlan
+		STP => sw<->(sw1<->sw2)
 
 VLANS:
 
-Native 		VLAN	= 22
-Managment 	VLAN	= 44
-Derective 	VLAN	= 220 to 229
-
-NETMASKS:
-
-/16	255.255.0.0
-/24	255.255.255.0
-/30	255.255.255.252
+Native		VLAN	= 22
+Managment	VLAN	= 44
+Derective	VLAN	= 220 to 229
 
 URLS:
 
-vlsns 	settings: https://linkas.ru/articles/vlan-v-cisco/
+VLANs	settings: https://linkas.ru/articles/vlan-v-cisco/
 VTP		settings: https://www.atraining.ru/protocol-vtp2/
+
+Сети:
+
+1. LAN 1-3: 172.18.64.0/20	=>	Делить на 16 подсетей	=> ( 16ю на 8 подсетей с /30 и для ISP )
+2. LAN 4-5: 10.22.64.0/21	=>	Делить на 8  подсетей	=> ( 6ю на 4 подсети для serv-v и для LoX )
+
+
+1. LAN 1-3:
+	172.18.64.0/20
+=> VLANs IPs
+
+	01. Network: 172.18.64.0/24			VLAN 220
+	02. Network: 172.18.65.0/24			VLAN 221
+	03. Network: 172.18.66.0/24			VLAN 222
+	04. Network: 172.18.67.0/24			VLAN 223
+	05. Network: 172.18.68.0/24			VLAN 224
+	06. Network: 172.18.69.0/24			VLAN 22
+	07. Network: 172.18.70.0/24			
+	08. Network: 172.18.71.0/24			
+	09. Network: 172.18.72.0/24			
+	10. Network: 172.18.73.0/24			
+	11. Network: 172.18.74.0/24			
+	12. Network: 172.18.75.0/24			
+	13. Network: 172.18.76.0/24			
+	14. Network: 172.18.77.0/24			
+	15. Network: 172.18.78.0/24			
+	16. Network: 172.18.79.0/24			For ISP
+=> ISP IPs
+
+	1. Network: 172.18.79.0/30			cht-rtr1 -> cht-isp
+	2. Network: 172.18.79.4/30			cht-rtr2 -> cht-isp
+	3. Network: 172.18.79.8/30			cht-isp	-> bezruk-isp
+	4. Network: 172.18.79.12/30			bezruk-isp -> kazahstan-isp
+	5. Network: 172.18.79.16/30			rostelecom-isp -> bezruk-isp
+	6. Network: 172.18.79.20/30			kazahstan-isp -> ssa-v-isp
+	7. Network: 172.18.79.24/30			floor-sw-ssa-v -> ssa-v-isp
+	8. Network: 172.18.79.28/30			ssa-v-isp -> cht-isp
+
+2. LAN 4-5
+	10.22.64.0/21
+=> VLANs IPs
+
+	1. Network: 10.22.64.0/24			VLAN 225
+	2. Network: 10.22.65.0/24			VLAN 226
+	3. Network: 10.22.66.0/24			VLAN 227
+	4. Network: 10.22.67.0/24			VLAN 228
+	5. Network: 10.22.68.0/24			VLAN 229
+	6. Network: 10.22.69.0/24			
+	7. Network: 10.22.70.0/24			
+	8. Network: 10.22.71.0/24			
+=> Services IPs
+
+	1. Network: 10.22.71.0/26			Server Farm
+	2. Network: 10.22.71.64/26			
+	3. Network: 10.22.71.128/26			
+	4. Network: 10.22.71.192/26			
 
