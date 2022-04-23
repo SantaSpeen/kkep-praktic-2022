@@ -1,8 +1,8 @@
 Use: 
 
-	gay-zone:
-		all => VLAN 22, 220-221
-		b1-b2 => EthChannel
+	china-town:
+		all => VLAN 22, 44, 220-221
+		main->( b1<->b2 ) => EthChannel (on)
 
 VLANS:
 
@@ -15,3 +15,9 @@ NETMASKS:
 /16	255.255.0.0
 /24	255.255.255.0
 /30	255.255.255.252
+
+URLS:
+
+vlsns 	settings: https://linkas.ru/articles/vlan-v-cisco/
+VTP		settings: https://www.atraining.ru/protocol-vtp2/
+

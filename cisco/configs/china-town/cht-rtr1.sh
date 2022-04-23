@@ -10,9 +10,9 @@ en
 			na "Managment VLAN"
 
 		vl 220
-			na "VLAN1 Gay"
+			na "VLAN1 China town"
 		vl 221
-			na "VLAN2 Gay"
+			na "VLAN2 China town"
 		vl 222
 			na "VLAN3 Sexshop"
 		vl 223
@@ -47,11 +47,11 @@ en
 			sw t n vl 22
 			exit
 
-		h gay-rtr1
-		ip domain n gay-rtr1
+		h cht-rtr1
+		ip domain n cht-rtr1
 		ena s cisco
 		ser p 
-		ba m "Hello from gay-rtr1!"
+		ba m "Hello from cht-rtr1!"
 
 		cr k g r
 		1024
