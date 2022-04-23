@@ -54,7 +54,6 @@ en
 		int r fa0/1-2
 			no sh
 			sw m trank
-			sw trank native vl 22
 			channel-group 2 mode on
 			exit
 

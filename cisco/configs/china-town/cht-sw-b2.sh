@@ -43,14 +43,10 @@ en
 
 		int r fa0/2-3
 			channel-group 1 mode on
-
-		int fa0/4 
-			channel-group 2 mode on
 			
 		int r fa0/1-4
 			no sh
 			sw m t
-			sw t n vl 22
 			exit
 
 		h cht-sw-b2
