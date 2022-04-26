@@ -8,7 +8,7 @@ Use:
 		2. cht-rtr2 		cht-isp: 		172.18.79.4/30
 		3. cht-isp			bezruk-isp: 	172.18.79.8/30
 		4. bezruk-isp		kazahstan-isp:	172.18.79.12/30 
-		5. rostelecom-isp	bezruk-isp: 	172.18.79.16/30
+		5. rostelecom-isp	bezruk-isp:		172.18.79.16/30
 		6. kazahstan-isp 	ssa-v-isp:		172.18.79.20/30
 		7. floor-sw-ssa-v	ssa-v-isp:		172.18.79.24/30
 		8. ssa-v-isp		cht-isp: 		172.18.79.28/30
@@ -44,19 +44,19 @@ VTP		settings: https://www.atraining.ru/protocol-vtp2/
 	172.18.64.0/20
 => VLANs IPs
 
-	01. Network: 172.18.64.0/24			VLAN 220
-	02. Network: 172.18.65.0/24			VLAN 221
-	03. Network: 172.18.66.0/24			VLAN 222
-	04. Network: 172.18.67.0/24			VLAN 223
-	05. Network: 172.18.68.0/24			VLAN 224
-	06. Network: 172.18.69.0/24			VLAN 22
+	01. Network: 172.18.64.0/24			VLAN 220 (LAN1)
+	02. Network: 172.18.65.0/24			VLAN 221 (LAN1)
+	03. Network: 172.18.66.0/24			VLAN 222 (LAN2)
+	04. Network: 172.18.67.0/24			VLAN 223 (LAN3)
+	05. Network: 172.18.68.0/24			VLAN 224 (LAN3)
+	06. Network: 172.18.69.0/24			VLAN 22  (NATIVE)
 	07. Network: 172.18.70.0/24			
 	08. Network: 172.18.71.0/24			
-	09. Network: 172.18.72.0/24			
-	10. Network: 172.18.73.0/24			
-	11. Network: 172.18.74.0/24			
-	12. Network: 172.18.75.0/24			
-	13. Network: 172.18.76.0/24			
+	09. Network: 172.18.72.0/24			LAN1 -> VLAN 44 (MANAGMENT)
+	10. Network: 172.18.73.0/24			LAN2 -> VLAN 44 (MANAGMENT)
+	11. Network: 172.18.74.0/24			LAN3 -> VLAN 44 (MANAGMENT)
+	12. Network: 172.18.75.0/24			LAN4 -> VLAN 44 (MANAGMENT)
+	13. Network: 172.18.76.0/24			LAN5 -> VLAN 44 (MANAGMENT)
 	14. Network: 172.18.77.0/24			
 	15. Network: 172.18.78.0/24			
 	16. Network: 172.18.79.0/24			For ISP
@@ -75,11 +75,11 @@ VTP		settings: https://www.atraining.ru/protocol-vtp2/
 	10.22.64.0/21
 => VLANs IPs
 
-	1. Network: 10.22.64.0/24			VLAN 225
-	2. Network: 10.22.65.0/24			VLAN 226
-	3. Network: 10.22.66.0/24			VLAN 227
-	4. Network: 10.22.67.0/24			VLAN 228
-	5. Network: 10.22.68.0/24			VLAN 229
+	1. Network: 10.22.64.0/24			VLAN 225 (LAN4)
+	2. Network: 10.22.65.0/24			VLAN 226 (LAN4)
+	3. Network: 10.22.66.0/24			VLAN 227 (LAN4)
+	4. Network: 10.22.67.0/24			VLAN 228 (LAN5)
+	5. Network: 10.22.68.0/24			VLAN 229 (LAN5)
 	6. Network: 10.22.69.0/24			
 	7. Network: 10.22.70.0/24			
 	8. Network: 10.22.71.0/24			

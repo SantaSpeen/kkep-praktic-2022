@@ -13,7 +13,7 @@ en
 		vl 221
 			na "VLAN2 China town"
 		vl 222
-			na "VLAN3 Sexshop"
+			na "VLAN3 Imsit"
 		vl 223
 			na "VLAN4 Bezruk steet"
 		vl 224

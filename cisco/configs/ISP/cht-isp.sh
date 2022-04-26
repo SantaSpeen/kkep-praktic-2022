@@ -1,7 +1,4 @@
 en
-	er s
-	del vlan.dat
-
 	conf t
 
 		vl 22 
@@ -14,7 +11,7 @@ en
 		vl 221
 			na "VLAN2 China town"
 		vl 222
-			na "VLAN3 Sexshop"
+			na "VLAN3 Imsit"
 		vl 223
 			na "VLAN4 Bezruk steet"
 		vl 224
@@ -41,6 +38,20 @@ en
 			login local
 			t i s
 
+		int se0/3/0
+			ip addr 172.18.79.9 255.255.255.252
+
+		int se0/3/1
+			ip addr 172.18.79.30 255.255.255.252
+
+		int r se0/3/0
+
+		int gi0/0
+			ip addr 172.18.79.6 255.255.255.252
+
+		int gi0/1
+			ip addr 172.17.79.2 255.255.255.252
+
 		int r gi0/0-1
 			no sh
 			sw m t
@@ -51,7 +62,7 @@ en
 		ip domain n cht-rtr
 		ena s cisco
 		ser p 
-		ba m "Hello from cht-rtr!"
+		ba m "Hello from cht-isp!"
 
 		cr k g r
 		1024

@@ -1,6 +1,4 @@
 en
-	er s
-	del vlan.dat
 	conf t
 
 		vl 22 

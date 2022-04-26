@@ -1,7 +1,4 @@
 en
-	er s
-	del vlan.dat
-
 	conf t
 
 		vl 22 
@@ -14,7 +11,7 @@ en
 		vl 221
 			na "VLAN2 China town"
 		vl 222
-			na "VLAN3 Sexshop"
+			na "VLAN3 Imsit"
 		vl 223
 			na "VLAN4 Bezruk steet"
 		vl 224
@@ -43,6 +40,9 @@ en
 
 		int r fa0/2-3
 			channel-group 1 mode on
+
+		int p 1
+			sw m t
 
 		int r fa0/1-4
 			no sh
