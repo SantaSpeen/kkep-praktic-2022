@@ -5,7 +5,7 @@ en
 			na "Native VLAN"
 		vl 44
 			na "Managment VLAN"
-
+			ip addr 172.18.72.2 255.255.255.0
 		vl 220
 			na "VLAN1 China town"
 		vl 221

@@ -1,14 +1,10 @@
 en
-	er s
-	del vlan.dat
-
 	conf t
-
 		vl 22 
 			na "Native VLAN"
 		vl 44
 			na "Managment VLAN"
-
+			ip addr 172.18.72.1 255.255.255.0
 		vl 220
 			na "VLAN1 China town"
 		vl 221
@@ -68,6 +64,8 @@ en
 
 		ip s v 2
 		u admin s admin
+
+		ip def 
 
 		do wr
 		do rel
