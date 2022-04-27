@@ -5,27 +5,11 @@ en
 			na "Native VLAN"
 		vl 44
 			na "Managment VLAN"
-
+			ip addr 172.18.72.3 255.255.255.0
 		vl 220
 			na "VLAN1 China town"
 		vl 221
 			na "VLAN2 China town"
-		vl 222
-			na "VLAN3 Imsit"
-		vl 223
-			na "VLAN4 Bezruk steet"
-		vl 224
-			na "VLAN5 Bezruk steet"
-		vl 225
-			na "VLAN6 Kazahstan"
-		vl 226
-			na "VLAN7 Kazahstan"
-		vl 227
-			na "VLAN8 Kazahstan"
-		vl 228
-			na "VLAN9 Sysadmin central"
-		vl 229
-			na "VLAN10 Sysadmin central"
 
 		lin c 0
 			exe 0 0

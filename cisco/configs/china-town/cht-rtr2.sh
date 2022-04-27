@@ -4,31 +4,17 @@ en
 
 	conf t
 
+		ip cef
+		no ipv6 cef
+
 		vl 22 
 			na "Native VLAN"
 		vl 44
 			na "Managment VLAN"
-
 		vl 220
 			na "VLAN1 China town"
 		vl 221
 			na "VLAN2 China town"
-		vl 222
-			na "VLAN3 Imsit"
-		vl 223
-			na "VLAN4 Bezruk steet"
-		vl 224
-			na "VLAN5 Bezruk steet"
-		vl 225
-			na "VLAN6 Kazahstan"
-		vl 226
-			na "VLAN7 Kazahstan"
-		vl 227
-			na "VLAN8 Kazahstan"
-		vl 228
-			na "VLAN9 Sysadmin central"
-		vl 229
-			na "VLAN10 Sysadmin central"
 
 		lin c 0
 			exe 0 0
@@ -41,10 +27,12 @@ en
 			login local
 			t i s
 
+		int gi0/0
+			ip addr 172.18.79.5 255.255.255.252
+
 		int r gi0/0-1
 			no sh
 			sw m t
-			sw t n vl 22
 			exit
 			
 		h cht-rtr2
